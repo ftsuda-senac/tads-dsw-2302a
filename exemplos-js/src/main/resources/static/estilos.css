@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+h1 {
+  color: red;
+  text-align: center;
+}
+
+#conteudo {
+  border: 3px dashed #ccc;
+  transition: all 0.5s ease-in-out;
+}
+
+#conteudo.fundo {
+  background-color: yellow;
+ 
+}
+
+.adjacente {
+  background-color: cyan;
+}
