@@ -139,42 +139,38 @@
       return promise;
     }
     
-    function carregarDadosJson() {
-      const promise = getJson('http://127.0.0.1:8080/dados');
-      promise.then(function(dados) {
+    async function carregarDadosJson() {
+      try {
+        const dados = await getJson('dados-madruga.json');
         document.getElementById('nome').innerHTML = dados.nome;
         document.getElementById('email').innerHTML = dados.email;
         document.getElementById('telefone').innerHTML = dados.telefone;
         document.getElementById('dataNascimento').innerHTML = dados.dataNascimento;
         document.getElementById('linkedInUrl').href = dados.linkedInUrl;
         document.getElementById('gitHubUrl').href = dados.gitHubUrl;
-      }).catch(function(erro) {
+      } catch(erro) {
         alert(erro.mensagem + ' - ' + erro.codigo);
-      });
+      }
     }
 
-    function carregarDadosSeguidoresJson() {
-      getJson('dados-array.json').then((dadosArray) => {
+    async function carregarDadosSeguidoresJson() {
+      try {
+        const dadosArray = await getJson('dados-array.json');
         for (let i = 0; i < dadosArray.length; i++) {
-            const dados = dadosArray[i];
-            document.getElementById('seguidores')
-            .insertAdjacentHTML('beforeend',
-            '<p>' + dados.nome + '<br />' + dados.email + '</p>');
-          }
-      }).catch((erro) => {
+          const dados = dadosArray[i];
+          document.getElementById('seguidores')
+          .insertAdjacentHTML('beforeend',
+          '<p>' + dados.nome + '<br />' + dados.email + '</p>');
+        }
+      } catch(erro) {
         alert(erro.mensagem + ' - ' + erro.codigo);
-      })
+      }
     }
 
-    // document.getElementById('btnCarregarDados').onclick = function() {
-    //   carregarDadosJson();
-    //   carregarDadosSeguidoresJson();
-    // }
-
-    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btnCarregarDados').onclick = function() {
       carregarDadosJson();
       carregarDadosSeguidoresJson();
-    })
+    }
 
   </script>
 </body>
