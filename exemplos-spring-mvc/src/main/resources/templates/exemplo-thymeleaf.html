@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exemplos Spring MVC Thymeleaf</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Exemplos Spring MVC Thymeleaf</h1>
+    <div>
+      <form action="/dados-pessoais-thy/busca">
+        <input type="search" name="termo" />
+        <input type="hidden" name="quantidade" value="10" />
+        <button>Buscar</button>
+      </form>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Nome</td>
+          <td>E-mail</td>
+          <td>Telefone</td>
+          <td>Data nascimento</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="dados : ${resultados}">
+          <td th:text="${dados.id}"></td>
+          <td th:text="${dados.nome}"></td>
+          <td th:text="${dados.email}"></td>
+          <td th:text="${dados.telefone}"></td>
+          <td th:text="${dados.dataNascimento}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
