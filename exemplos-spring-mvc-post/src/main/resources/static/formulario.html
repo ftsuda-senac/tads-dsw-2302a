@@ -14,22 +14,25 @@
   <div class="container-md">
     <div class="row">
       <h1>Exemplo POST via form + validação</h1>
-      <form id="frmDadosPessoais">
+      <form id="frmDadosPessoais" novalidate>
         <input type="hidden" name="id" />
         <div class="mb-3">
           <label for="txtNome" class="form-label">Nome</label>
           <input type="text" class="form-control" name="nome" id="txtNome" placeholder="Nome completo" maxlength="100"
             required />
+          <p class="invalid-feedback"></p>
         </div>
         <div class="mb-3">
           <label for="txtApelido" class="form-label">Apelido</label>
           <input type="text" class="form-control" name="apelido" id="txtApelido" placeholder="Apelido" maxlength="64"
             required />
+          <p class="invalid-feedback"></p>
         </div>
         <div class="mb-3">
           <label for="txtEmail" class="form-label">E-mail</label>
           <input type="email" class="form-control" name="email" id="txtEmail" placeholder="E-mail válido"
             maxlength="200" required />
+          <p class="invalid-feedback"></p>
         </div>
         <div class="mb-3">
           <label for="txtTelefone" class="form-label">Telefone</label>
@@ -98,8 +101,27 @@
         conhecimentos: conhecimentosSelecionados
       };
       console.log(JSON.stringify(dados));
-      await postJson('/dados-pessoais', dados);
-      alert('Sucesso');
+
+      document.querySelectorAll('input[name]')
+          .forEach(el => el.classList.remove('is-invalid'));
+      document.querySelectorAll('input[name] ~ p')
+          .forEach(el => el.innerHTML = '');
+
+      try {
+        await postJson('/dados-pessoais', dados);
+        alert('Sucesso');
+      } catch(err) {
+        if (err.length > 0) {
+          for (const erro of err) {
+            const inputEl = document.querySelector('[name="' + erro.campoName + '"]');
+            inputEl.classList.add('is-invalid');
+            const messageEl = document.querySelector('[name="' + erro.campoName + '"] ~ p');
+            if (messageEl) {
+              messageEl.innerHTML = erro.mensagem;
+            }
+          }
+        }
+      }
     }
 
     document.getElementById('frmDadosPessoais').onsubmit = montarEnviarDados;

@@ -34,11 +34,26 @@ function postJson(url, dados) {
         }
       } else {
         // ERROS
-        const objErro = {
-          codigo: xhr.status,
-          mensagem: 'Erro'
-        };
-        reject(objErro);
+        if (xhr.status === 400) {
+          // Montar dados com os erros de validação
+          const objErroResp = JSON.parse(xhr.responseText);
+          const objErros = [];
+          if (objErroResp.errors.length > 0) {
+            for (const erro of objErroResp.errors) {
+              objErros.push({
+                campoName: erro.field,
+                mensagem: erro.defaultMessage
+              });
+            }
+          }
+          reject(objErros);
+        } else {
+          const objErro = {
+            codigo: xhr.status,
+            mensagem: 'Erro'
+          };
+          reject(objErro);
+        }
       }
     };
     xhr.send(JSON.stringify(dados));

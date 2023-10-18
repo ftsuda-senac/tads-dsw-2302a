@@ -4,6 +4,7 @@
  */
 package br.senac.tads.dsw.exemplos;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -68,7 +69,7 @@ public class DadosPessoaisController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody DadosPessoais dados) {
+	public ResponseEntity<?> salvar(@RequestBody @Valid DadosPessoais dados) {
 		System.out.printf("**** " + dados.toString());
 		service.save(dados);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
