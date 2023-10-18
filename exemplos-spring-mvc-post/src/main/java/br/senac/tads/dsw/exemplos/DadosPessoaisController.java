@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,11 +71,21 @@ public class DadosPessoaisController {
 
 	@PostMapping
 	public ResponseEntity<?> salvar(@RequestBody @Valid DadosPessoais dados) {
-		System.out.printf("**** " + dados.toString());
+		System.out.println("**** " + dados.toString());
+
+		String hashSenha = BCrypt.hashpw(dados.getSenha(), BCrypt.gensalt());
+
+		System.out.println("**** Hash da senha " + dados.getSenha() + " : " + hashSenha);
+
 		service.save(dados);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dados.getId()).toUri();
 		return ResponseEntity.created(location).build();
+	}
+
+	@GetMapping("/verificar-senha")
+	public boolean verificarSenha(@RequestParam String hash, @RequestParam String senha) {
+		return BCrypt.checkpw(senha, hash);
 	}
 
 }
