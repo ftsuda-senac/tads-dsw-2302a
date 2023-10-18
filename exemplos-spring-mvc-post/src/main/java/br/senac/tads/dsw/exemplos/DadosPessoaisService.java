@@ -14,4 +14,6 @@ public interface DadosPessoaisService {
 
 	Optional<DadosPessoais> findByIdComOptional(int id);
 
+	void save(DadosPessoais dados);
+
 }

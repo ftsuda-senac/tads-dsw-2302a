@@ -23,7 +23,7 @@ function postJson(url, dados) {
   const promise = new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
-    xhr.setRequestHeader('content-type', 'application/json')
+    xhr.setRequestHeader('content-type', 'application/json');
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 400) {
         // SUCESSO
@@ -41,7 +41,7 @@ function postJson(url, dados) {
         reject(objErro);
       }
     };
-    xhr.send();
+    xhr.send(JSON.stringify(dados));
   });
   return promise;
 }

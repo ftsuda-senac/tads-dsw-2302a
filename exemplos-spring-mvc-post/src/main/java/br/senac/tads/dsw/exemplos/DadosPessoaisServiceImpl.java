@@ -17,15 +17,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class DadosPessoaisServiceImpl implements DadosPessoaisService {
 
+	private static int contador = 0;
+
 	private Map<Integer, DadosPessoais> mapDados = new LinkedHashMap<>();
 
 	@PostConstruct
     public void init() {
-        mapDados.put(1, new DadosPessoais(1, "Fulano da Silva", "fulano", "fulano@teste.com.br", "(11) 99999-1122",
+		int id = ++contador;
+        mapDados.put(id, new DadosPessoais(id, "Fulano da Silva", "fulano", "fulano@teste.com.br", "(11) 99999-1122",
                 "abcd$1234", "abcd$1234", LocalDate.parse("2000-10-20"), Arrays.asList("Java", "HTML", "CSS")));
-        mapDados.put(2, new DadosPessoais(2, "Ciclano de Souza", "ciclano", "ciclano@teste.com.br", "(11) 98765-1234",
+		id = ++contador;
+        mapDados.put(id, new DadosPessoais(id, "Ciclano de Souza", "ciclano", "ciclano@teste.com.br", "(11) 98765-1234",
                 "abcd$1234", "abcd$1234", LocalDate.parse("2001-05-15"),  Arrays.asList("Java", "HTML", "Javascript")));
-        mapDados.put(3, new DadosPessoais(3, "Beltrana dos Santos", "beltrana", "beltrana@teste.com.br", "(11) 91234-8877",
+		id = ++contador;
+        mapDados.put(id, new DadosPessoais(id, "Beltrana dos Santos", "beltrana", "beltrana@teste.com.br", "(11) 91234-8877",
                 "abcd$1234", "abcd$1234", LocalDate.parse("1999-02-01"),  Arrays.asList("HTML", "CSS", "Javascript")));
     }
 
@@ -65,6 +70,12 @@ public class DadosPessoaisServiceImpl implements DadosPessoaisService {
 	@Override
 	public Optional<DadosPessoais> findByIdComOptional(int id) {
 		return Optional.ofNullable(mapDados.get(id));
+	}
+
+	@Override
+	public void save(DadosPessoais dados) {
+		dados.setId(++contador);
+		mapDados.put(dados.getId(), dados);
 	}
 
 }
