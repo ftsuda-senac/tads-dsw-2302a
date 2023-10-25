@@ -46,7 +46,7 @@ public class InteresseRepository {
 	}
 
 	@Transactional
-	public void delete(Integer id) {
+	public void deleteById(Integer id) {
 		// Carregar obj no entityManager
 		Interesse interesse = em.find(Interesse.class, id);
 		em.remove(interesse);

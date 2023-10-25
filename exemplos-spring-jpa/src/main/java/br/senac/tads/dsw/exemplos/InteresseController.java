@@ -65,7 +65,7 @@ public class InteresseController {
 		repo.findById(id).orElseThrow(() ->
 			new ResponseStatusException(
 				HttpStatus.NOT_FOUND, "ID " + id + " não encontrado"));
-		repo.delete(id);
+		repo.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
 
