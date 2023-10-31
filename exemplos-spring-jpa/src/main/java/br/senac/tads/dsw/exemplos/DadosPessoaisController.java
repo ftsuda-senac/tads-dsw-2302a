@@ -30,12 +30,12 @@ public class DadosPessoaisController {
 	private DadosPessoaisService service;
 	
 	@GetMapping
-	public List<DadosPessoais> findAll() {
+	public List<DadosPessoaisDto> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping("/busca")
-	public List<DadosPessoais> buscar(
+	public List<DadosPessoaisDto> buscar(
 			@RequestParam("termo") String termoBusca,
 			@RequestParam(name = "nascimento", required = false) LocalDate dataNascimento,
 			@RequestParam(defaultValue = "1") int pagina,
@@ -45,8 +45,8 @@ public class DadosPessoaisController {
 	}
 
 	@GetMapping("/{id}")
-	public DadosPessoais findById(@PathVariable Integer id) {
-		DadosPessoais dados = service.findById(id);
+	public DadosPessoaisDto findById(@PathVariable Integer id) {
+		DadosPessoaisDto dados = service.findById(id);
 		if (dados != null) {
 			return dados;
 		} else {
@@ -56,7 +56,7 @@ public class DadosPessoaisController {
 	}
 
 	@GetMapping("/{id}/opt")
-	public DadosPessoais findByIdComOptional(@PathVariable Integer id) {
+	public DadosPessoaisDto findByIdComOptional(@PathVariable Integer id) {
 //		Optional<DadosPessoais> optDadosPessoais = service.findByIdComOptional(id);
 //		if (optDadosPessoais.isPresent()) {
 //			return optDadosPessoais.get();
@@ -70,7 +70,7 @@ public class DadosPessoaisController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody @Valid DadosPessoais dados) {
+	public ResponseEntity<?> salvar(@RequestBody @Valid DadosPessoaisDto dados) {
 		System.out.println("**** " + dados.toString());
 
 		String hashSenha = BCrypt.hashpw(dados.getSenha(), BCrypt.gensalt());

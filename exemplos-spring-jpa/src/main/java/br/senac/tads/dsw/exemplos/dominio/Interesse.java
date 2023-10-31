@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Interesse {
@@ -15,6 +17,9 @@ public class Interesse {
 
 	@Column(length = 50, unique = true, nullable = false)
 	private String nome;
+
+	@ManyToMany(mappedBy = "interesses")
+	private Set<DadosPessoais> pessoas;
 
 	public Interesse() {
 	}
@@ -38,6 +43,14 @@ public class Interesse {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Set<DadosPessoais> getPessoas() {
+		return pessoas;
+	}
+
+	public void setPessoas(Set<DadosPessoais> pessoas) {
+		this.pessoas = pessoas;
 	}
 
 }

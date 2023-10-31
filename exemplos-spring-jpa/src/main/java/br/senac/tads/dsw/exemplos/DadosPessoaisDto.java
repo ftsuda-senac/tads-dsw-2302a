@@ -1,14 +1,18 @@
 package br.senac.tads.dsw.exemplos;
 
+import br.senac.tads.dsw.exemplos.dominio.DadosPessoais;
+import br.senac.tads.dsw.exemplos.dominio.FotoPessoa;
+import br.senac.tads.dsw.exemplos.dominio.Interesse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @SenhasIguais
-public class DadosPessoais {
+public class DadosPessoaisDto {
 
 	private Integer id;
 
@@ -40,10 +44,12 @@ public class DadosPessoais {
 	@Size(min = 1)
 	private List<String> conhecimentos;
 
-	public DadosPessoais() {
+	private String urlFoto;
+
+	public DadosPessoaisDto() {
 	}
 
-	public DadosPessoais(Integer id, String nome, String apelido, String email, String telefone, String senha, String senhaRepetida,
+	public DadosPessoaisDto(Integer id, String nome, String apelido, String email, String telefone, String senha, String senhaRepetida,
 			LocalDate dataNascimento, List<String> conhecimentos) {
 		this.id = id;
 		this.nome = nome;
@@ -56,10 +62,29 @@ public class DadosPessoais {
 		this.conhecimentos = conhecimentos;
 	}
 
-	public DadosPessoais(String nome, String apelido, String email, String telefone, String senha, String senhaRepetida,
+	public DadosPessoaisDto(String nome, String apelido, String email, String telefone, String senha, String senhaRepetida,
 			LocalDate dataNascimento, List<String> conhecimentos) {
 		this(null, nome, apelido, email, telefone, senha, senhaRepetida, dataNascimento, conhecimentos);
 	}
+
+    public DadosPessoaisDto(DadosPessoais bd) {
+        this.id = bd.getId();
+        this.nome = bd.getNome();
+        this.apelido = bd.getApelido();
+        this.email = bd.getEmail();
+        this.telefone = bd.getTelefone();
+        this.dataNascimento = bd.getDataNascimento();
+        List<String> interesses = new ArrayList<>();
+        for (Interesse i : bd.getInteresses()) {
+            interesses.add(i.getNome());
+        }
+        this.conhecimentos = interesses;
+        if (bd.getFotos() != null && !bd.getFotos().isEmpty()) {
+            for (FotoPessoa foto : bd.getFotos()) {
+                this.urlFoto = "http://localhost:8080/imagens/" + foto.getNomeArquivo();
+            }
+        }
+    }
 
 	public Integer getId() {
 		return id;
@@ -131,6 +156,14 @@ public class DadosPessoais {
 
 	public void setConhecimentos(List<String> conhecimentos) {
 		this.conhecimentos = conhecimentos;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
 	}
 
 	@Override

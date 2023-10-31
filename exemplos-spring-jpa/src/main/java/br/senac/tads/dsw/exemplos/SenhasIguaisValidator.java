@@ -11,10 +11,10 @@ import jakarta.validation.ConstraintValidatorContext;
  *
  * @author ftsuda
  */
-public class SenhasIguaisValidator implements ConstraintValidator<SenhasIguais, DadosPessoais> {
+public class SenhasIguaisValidator implements ConstraintValidator<SenhasIguais, DadosPessoaisDto> {
 
 	@Override
-	public boolean isValid(DadosPessoais dados, ConstraintValidatorContext context) {
+	public boolean isValid(DadosPessoaisDto dados, ConstraintValidatorContext context) {
 		if (dados.getSenha().equals(dados.getSenhaRepetida())) {
 			return true;
 		}

@@ -6,14 +6,14 @@ import java.util.Optional;
 
 public interface DadosPessoaisService {
 
-	List<DadosPessoais> findAll();
+	List<DadosPessoaisDto> findAll();
 
-	List<DadosPessoais> buscar(String termoBusca, int pagina, int quantidade);
+	List<DadosPessoaisDto> buscar(String termoBusca, int pagina, int quantidade);
 
-	DadosPessoais findById(int id);
+	DadosPessoaisDto findById(int id);
 
-	Optional<DadosPessoais> findByIdComOptional(int id);
+	Optional<DadosPessoaisDto> findByIdComOptional(int id);
 
-	void save(DadosPessoais dados);
+	void save(DadosPessoaisDto dados);
 
 }
