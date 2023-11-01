@@ -15,11 +15,11 @@ public interface DadosPessoaisRepository extends JpaRepository<DadosPessoais, In
 
 	Page<DadosPessoais> findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(String nome, String email,Pageable page);
 
-	@Query("""
+    @Query("""
         SELECT dp FROM DadosPessoais dp
-        WHERE UPPER(dp.nome) LIKE UPPER(%?1%)
-        OR UPPER(dp.email) LIKE UPPER(%?1%)
-        """)
+            WHERE UPPER(dp.nome) LIKE UPPER(concat('%', ?1,'%')) OR
+                UPPER(dp.email) LIKE UPPER(concat('%', ?1,'%'))
+            """)
 	Page<DadosPessoais> findComJpql(String termo, Pageable page);
 
 	@Query(value = """

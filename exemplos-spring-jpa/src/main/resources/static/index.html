@@ -42,8 +42,10 @@
   <script src="funcoes.js"></script>
   <script>
     async function carregarDados() {
+      const searchParams = new URLSearchParams(window.location.search);
+      const idParam = searchParams.has('id') ? searchParams.get('id') : 1;
       try {
-        let resultado = await getJson('/dados-pessoais/77');
+        let resultado = await getJson(`/dados-pessoais/${idParam}`);
         document.getElementById('foto').src = resultado.urlFoto;
         document.getElementById('nome').innerHTML = resultado.nome;
         document.getElementById('email').innerHTML = resultado.email;
@@ -54,6 +56,7 @@
         for (const c of resultado.conhecimentos) {
           conhecimentosLi += `<li>${c}</li>`;
         }
+        document.getElementById('conhecimentosList').innerHTML = '';
         document.getElementById('conhecimentosList')
           .insertAdjacentHTML('beforeend', conhecimentosLi);
       } catch (err) {

@@ -41,7 +41,7 @@ public class DadosPessoaisServiceBdImpl implements DadosPessoaisService {
 	@Override
 	public List<DadosPessoaisDto> buscar(String termoBusca, int pagina, int quantidade) {
 		if (termoBusca != null && termoBusca.length() > 0 ) {
-			Page<DadosPessoais> resultadosPage = repo.findComSql(termoBusca, PageRequest.of(pagina, quantidade));
+			Page<DadosPessoais> resultadosPage = repo.findComJpql(termoBusca, PageRequest.of(pagina, quantidade));
 			List<DadosPessoaisDto> resultadoDto = new ArrayList<>();
 			for (DadosPessoais bd : resultadosPage.getContent()) {
 				resultadoDto.add(new DadosPessoaisDto(bd));
