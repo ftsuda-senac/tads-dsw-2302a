@@ -32,6 +32,16 @@ public class FotoPessoa {
 
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
-	private DadosPessoais pessoa;
+    // @JsonIgnore // Adicionar para evitar loop infinito ao gerar JSON
+    private DadosPessoais pessoa;
+
+    public FotoPessoa() {
+
+    }
+
+    public FotoPessoa(String nomeArquivo, String legenda) {
+        this.nomeArquivo = nomeArquivo;
+        this.legenda = legenda;
+    }
 
 }

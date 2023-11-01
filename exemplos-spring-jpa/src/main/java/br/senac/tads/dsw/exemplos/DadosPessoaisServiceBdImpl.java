@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,23 +40,41 @@ public class DadosPessoaisServiceBdImpl implements DadosPessoaisService {
 
 	@Override
 	public List<DadosPessoaisDto> buscar(String termoBusca, int pagina, int quantidade) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		if (termoBusca != null && termoBusca.length() > 0 ) {
+			Page<DadosPessoais> resultadosPage = repo.findComSql(termoBusca, PageRequest.of(pagina, quantidade));
+			List<DadosPessoaisDto> resultadoDto = new ArrayList<>();
+			for (DadosPessoais bd : resultadosPage.getContent()) {
+				resultadoDto.add(new DadosPessoaisDto(bd));
+			}
+			return resultadoDto;
+		} else {
+			Page<DadosPessoais> resultadosPage = repo.findAll(PageRequest.of(pagina, quantidade));
+			List<DadosPessoaisDto> resultadoDto = new ArrayList<>();
+			for (DadosPessoais bd : resultadosPage.getContent()) {
+				resultadoDto.add(new DadosPessoaisDto(bd));
+			}
+			return resultadoDto;
+		}
 	}
 
 	@Override
 	public DadosPessoaisDto findById(int id) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		Optional<DadosPessoais> optDadosPessoais = repo.findById(id);
+		if (optDadosPessoais.isEmpty()) {
+			return null;
+		}
+		return new DadosPessoaisDto(optDadosPessoais.get());
 	}
 
 	@Override
 	public Optional<DadosPessoaisDto> findByIdComOptional(int id) {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		return repo.findById(id).map(bd -> new DadosPessoaisDto(bd));
 	}
 
 	@Override
 	@Transactional
 	public void save(DadosPessoaisDto dados) {
-        DadosPessoais bd  =new DadosPessoais();
+        DadosPessoais bd  = new DadosPessoais();
         bd.setId(dados.getId());
         bd.setNome(dados.getNome());
         bd.setApelido(dados.getApelido());
