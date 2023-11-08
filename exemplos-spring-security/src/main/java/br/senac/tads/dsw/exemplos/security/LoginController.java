@@ -4,6 +4,7 @@
  */
 package br.senac.tads.dsw.exemplos.security;
 
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +21,17 @@ public class LoginController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private TokenService tokenService;
+
 	@PostMapping
 	public String executar(@RequestBody Credencial dadosLogin) {
 		Authentication auth = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
 						dadosLogin.username, dadosLogin.senha));
         UsuarioSistema usuario = (UsuarioSistema) auth.getPrincipal();
-        return usuario.getNomeCompleto() + " " + usuario.getEmail();
+		String jwt = tokenService.generateToken(usuario, Duration.ofMinutes(15));
+        return jwt;
 	}
 
 	public static record Credencial(String username, String senha) {
