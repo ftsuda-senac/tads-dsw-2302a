@@ -71,6 +71,9 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <div class="alert alert-danger" role="alert" id="alerta401" style="display: none">
+              Usuário não autenticado - <a href="./login.html">Fazer login</a>
+            </div>
             <div class="alert alert-danger" role="alert" id="alerta403" style="display: none">
                 Usuário sem permissão de acesso
             </div>
@@ -78,23 +81,29 @@
             <img src="" id="foto" />
             <p>Nome: <span id="nome"></span></p>
             <p>E-mail: <span id="email"></span></p>
-            <p>Telefone: <span id="telefone"></span></p>
+            <p>Hash senha cadastrada: <code id="hashSenha"></code></p>
+        </div>
+        <div>
+            <button id="btnComum" class="btn btn-primary">Ver Mensagem Comum</button>
+            <button id="btnJedi" class="btn btn-light">Ver Mensagem Jedi</button>
+            <button id="btnSith" class="btn btn-dark">Ver Mensagem Sith</button>
         </div>
     </div>
 </div>
 <script src="/js/funcoes.js"></script>
 <script>
         const jwt = localStorage.getItem('jwt');
-        buscarDadosJson('/me', null, jwt).then(function(resp) {
+        buscarDadosJson('/me', null, jwt).then((resp) => {
             document.getElementById('nome').innerHTML = resp.nome;
             document.getElementById('email').innerHTML = resp.email;
-            document.getElementById('telefone').innerHTML = resp.telefone;
             document.getElementById('foto').src = resp.urlFoto;
-
+            document.getElementById('hashSenha').innerHTML = resp.hashSenha;
         }).catch(function(err) {
-            if (err.status === 403) {
+            if (err.status === 401) {
+              document.getElementById('alerta401').style.display = 'block';
+            } else if (err.status === 403) {
                 document.getElementById('alerta403').style.display = 'block';
             }
-        })
+        });
     </script>
 </body>

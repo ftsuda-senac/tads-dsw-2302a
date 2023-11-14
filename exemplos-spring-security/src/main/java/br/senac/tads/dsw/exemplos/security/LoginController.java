@@ -28,7 +28,7 @@ public class LoginController {
 	public String executar(@RequestBody Credencial dadosLogin) {
 		Authentication auth = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
-						dadosLogin.username, dadosLogin.senha));
+						dadosLogin.username(), dadosLogin.senha()));
         UsuarioSistema usuario = (UsuarioSistema) auth.getPrincipal();
 		String jwt = tokenService.generateToken(usuario, Duration.ofMinutes(15));
         return jwt;
