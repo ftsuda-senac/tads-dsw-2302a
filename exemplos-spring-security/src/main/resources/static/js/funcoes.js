@@ -71,6 +71,7 @@ function decodificarJwt(jwt) {
     const jwtData = decodeURIComponent(atob(b64)
         .split('')
         .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join(''))
+        .join(''));
+    console.log('Dados token: ' + jwtData);
     return JSON.parse(jwtData);
 }

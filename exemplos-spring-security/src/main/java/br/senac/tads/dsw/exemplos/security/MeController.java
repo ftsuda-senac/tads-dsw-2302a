@@ -5,6 +5,7 @@
 package br.senac.tads.dsw.exemplos.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,33 @@ public class MeController {
 
 	}
 
+	@GetMapping("/comum")
+	@PreAuthorize("isAuthenticated()")
+	public Mensagem findMensagemComum() {
+		return new Mensagem("Mensagem comum gerado no MeController");
+	}
+
+	@GetMapping("/jedi")
+	@PreAuthorize("hasAuthority('SCOPE_JEDI')")
+	public Mensagem findMensagemJedi() {
+		return new Mensagem("Que a força esteja com você");
+	}
+
+	@GetMapping("/sith")
+	@PreAuthorize("hasAuthority('SCOPE_LORD_SITH')")
+	public Mensagem findMensagemSith() {
+		return new Mensagem("Você não pode resistir ao lado sombrio da Força");
+	}
+
 	public static record UserInfo(
 			String nome,
 			String email,
 			String hashSenha,
 			String urlFoto) {
+	}
+
+	public static record Mensagem(String mensagem) {
+
 	}
 
 }

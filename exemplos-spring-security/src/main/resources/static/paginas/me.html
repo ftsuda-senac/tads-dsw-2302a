@@ -84,9 +84,9 @@
             <p>Hash senha cadastrada: <code id="hashSenha"></code></p>
         </div>
         <div>
-            <button id="btnComum" class="btn btn-primary">Ver Mensagem Comum</button>
-            <button id="btnJedi" class="btn btn-light">Ver Mensagem Jedi</button>
-            <button id="btnSith" class="btn btn-dark">Ver Mensagem Sith</button>
+            <button id="btnComum" class="btn btn-primary d-none">Ver Mensagem Comum</button>
+            <button id="btnJedi" class="btn btn-light d-none">Ver Mensagem Jedi</button>
+            <button id="btnSith" class="btn btn-dark d-none">Ver Mensagem Sith</button>
         </div>
     </div>
 </div>
@@ -105,5 +105,49 @@
                 document.getElementById('alerta403').style.display = 'block';
             }
         });
+
+        document.getElementById('btnComum').onclick = async function() {
+          try {
+            const resp = await buscarDadosJson('/comum', null, jwt);
+            alert(resp.mensagem);
+          } catch(err) {
+            if (err.status === 403) {
+              alert('Usuário sem permissão de acesso');
+            }
+          }
+        };
+
+        document.getElementById('btnJedi').onclick = async function() {
+          try {
+            const resp = await buscarDadosJson('/jedi', null, jwt);
+            alert(resp.mensagem);
+          } catch(err) {
+            if (err.status === 403) {
+              alert('Usuário sem permissão de acesso');
+            }
+          }
+        };
+
+        document.getElementById('btnSith').onclick = async function() {
+          try {
+            const resp = await buscarDadosJson('/sith', null, jwt);
+            alert(resp.mensagem);
+          } catch(err) {
+            if (err.status === 403) {
+              alert('Usuário sem permissão de acesso');
+            }
+          }
+        };
+        if (jwt) {
+          document.getElementById('btnComum').classList.remove('d-none');
+          const tokenDecodificado = decodificarJwt(jwt);
+          const papeis = tokenDecodificado.scope.split(/\s+/);
+          if (papeis.includes('JEDI')) {
+            document.getElementById('btnJedi').classList.remove('d-none');
+          }
+          if (papeis.includes('LORD_SITH')) {
+            document.getElementById('btnSith').classList.remove('d-none');
+          }
+        }
     </script>
 </body>
